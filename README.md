@@ -31,3 +31,69 @@ type T struct {
 }
  */
 ```
+
+Use `Options.ctorFunc` to generate a constructor:
+
+```ts
+import { genGoType } from 'gen-go-type';
+
+const goCode = genGoType(
+  'struct',
+  'T',
+  [
+    { name: 'A', type: 'T', tag: '"_____"' },
+    { name: 'A_______B', type: 'T2' },
+    { name: 'C', type: 'T______3', tag: '""' },
+  ],
+  { ctorFunc: true },
+);
+
+/*
+type T struct {
+    A         T        "_____"
+    A_______B T2
+    C         T______3 ""
+}
+
+func NewT(a T, a_______A T2, b T______T) *T {
+    return &T{
+        A: a,
+        A_______A: a_______A,
+        B: b,
+    }
+}
+ */
+```
+
+To generate a constructor returning a value type instead of a pointer, set `Options.returnValueInCtor` to `true`:
+
+```ts
+import { genGoType } from 'gen-go-type';
+
+const goCode = genGoType(
+  'struct',
+  'T',
+  [
+    { name: 'A', type: 'T', tag: '"_____"' },
+    { name: 'A_______B', type: 'T2' },
+    { name: 'C', type: 'T______3', tag: '""' },
+  ],
+  { ctorFunc: true, returnValueInCtor: true },
+);
+
+/*
+type T struct {
+    A         T        "_____"
+    A_______B T2
+    C         T______3 ""
+}
+
+func NewT(a T, a_______A T2, b T______T) T {
+    return T{
+        A: a,
+        A_______A: a_______A,
+        B: b,
+    }
+}
+ */
+```
