@@ -97,3 +97,33 @@ func NewT(a T, a_______A T2, b T______T) T {
 }
  */
 ```
+
+Constructor param names can be customized via `Member.paramName`, for example:
+
+```ts
+import { genGoType } from 'gen-go-type';
+
+const goCode = genGoType(
+  'struct',
+  'T',
+  [
+    { name: 'ID', type: 'string', paramName: 'id' },
+    { name: 'Type', type: 'string' },
+  ],
+  { ctorFunc: true },
+);
+
+/*
+type T struct {
+    ID   string
+    Type string
+}
+
+func NewT(id string, type string) *T {
+    return &T{
+        ID: id,
+        Type: type,
+    }
+}
+ */
+```

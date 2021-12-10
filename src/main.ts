@@ -2,6 +2,7 @@ export interface TypeMember {
   type: string;
   name: string;
   tag?: string;
+  paramName?: string;
 }
 
 export interface Options {
@@ -11,6 +12,10 @@ export interface Options {
 
 function lowerFirstLetter(s: string): string {
   return s.charAt(0).toLowerCase() + s.substring(1);
+}
+
+function memberParamName(m: TypeMember): string {
+  return m.paramName || lowerFirstLetter(m.name);
 }
 
 export function genGoType(
@@ -32,11 +37,11 @@ export function genGoType(
   s += '}\n';
 
   if (opt?.ctorFunc) {
-    const params = members.map((m) => `${lowerFirstLetter(m.name)} ${m.type}`).join(', ');
+    const params = members.map((m) => `${memberParamName(m)} ${m.type}`).join(', ');
     s += `\nfunc New${name}(${params}) ${opt?.returnValueInCtor ? '' : '*'}${name} {\n`;
     s += `\treturn ${opt?.returnValueInCtor ? '' : '&'}${name}{\n`;
     for (const m of members) {
-      s += `\t\t${m.name}: ${lowerFirstLetter(m.name)},\n`;
+      s += `\t\t${m.name}: ${memberParamName(m)},\n`;
     }
     s += '\t}\n';
     s += '}\n';
