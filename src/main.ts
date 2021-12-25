@@ -8,6 +8,10 @@ export interface TypeMember {
 export interface Options {
   ctorFunc?: boolean;
   returnValueInCtor?: boolean;
+  header?: string;
+  footer?: string;
+  bodyHeader?: string;
+  bodyFooter?: string;
 }
 
 function lowerFirstLetter(s: string): string {
@@ -24,7 +28,7 @@ export function genGoType(
   members: TypeMember[],
   opt?: Options,
 ): string {
-  let s = `type ${name} ${type} {\n`;
+  let s = `${opt?.header || ''}type ${name} ${type} {${opt?.bodyHeader || ''}\n`;
   const maxNameLen = Math.max(...members.map((m) => m.name.length));
   const maxTypeLen = Math.max(...members.map((m) => m.type.length));
   for (const mem of members) {
@@ -34,7 +38,7 @@ export function genGoType(
     }
     s += '\n';
   }
-  s += '}\n';
+  s += `${opt?.bodyFooter || ''}}${opt?.footer || ''}\n`;
 
   if (opt?.ctorFunc) {
     const params = members.map((m) => `${memberParamName(m)} ${m.type}`).join(', ');

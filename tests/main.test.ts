@@ -121,3 +121,24 @@ func NewT(a T, aaa T2, b T______T) *T {
 `,
   );
 });
+
+it('Headers and footers', () => {
+  assert.strictEqual(
+    genGoType(
+      structString,
+      'T',
+      [
+        { name: 'A', type: 'T' },
+        { name: 'A_______A', type: 'T2' },
+        { name: 'B', type: 'T______T' },
+      ],
+      { header: 'HEAD', footer: 'FOOT', bodyHeader: 'BODY_HEAD', bodyFooter: 'BODY_FOOT' },
+    ),
+    `HEADtype T struct {BODY_HEAD
+\tA         T
+\tA_______A T2
+\tB         T______T
+BODY_FOOT}FOOT
+`,
+  );
+});
