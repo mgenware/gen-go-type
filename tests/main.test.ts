@@ -142,3 +142,74 @@ BODY_FOOT}FOOT
 `,
   );
 });
+
+it('Base type', () => {
+  assert.strictEqual(
+    genGoType(
+      structString,
+      'T',
+      [
+        { name: 'A', type: 'T' },
+        { name: 'A_______A', type: 'T2' },
+        { name: 'B', type: 'T______T' },
+      ],
+      { ctorFunc: true, returnValueInCtor: true },
+      [{ name: 'User', paramName: 'user' }],
+    ),
+    `type T struct {
+\tUser
+
+\tA         T
+\tA_______A T2
+\tB         T______T
+}
+
+func NewT(user *User, a T, a_______A T2, b T______T) T {
+\treturn T{
+\t\tUser: *user,
+\t\tA: a,
+\t\tA_______A: a_______A,
+\t\tB: b,
+\t}
+}
+`,
+  );
+});
+
+it('Multiple types and package names', () => {
+  assert.strictEqual(
+    genGoType(
+      structString,
+      'T',
+      [
+        { name: 'A', type: 'T' },
+        { name: 'A_______A', type: 'T2' },
+        { name: 'B', type: 'T______T' },
+      ],
+      { ctorFunc: true, returnValueInCtor: true },
+      [
+        { name: 'Post', paramName: 'p', packageName: 'post' },
+        { name: 'User', paramName: 'user' },
+      ],
+    ),
+    `type T struct {
+\tpost.Post
+\tUser
+
+\tA         T
+\tA_______A T2
+\tB         T______T
+}
+
+func NewT(p *post.Post, user *User, a T, a_______A T2, b T______T) T {
+\treturn T{
+\t\tPost: *p,
+\t\tUser: *user,
+\t\tA: a,
+\t\tA_______A: a_______A,
+\t\tB: b,
+\t}
+}
+`,
+  );
+});
