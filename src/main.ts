@@ -40,7 +40,7 @@ export function genGoType(
   baseTypes?: BaseType[],
 ): string {
   let s = `${opt?.header || ''}type ${name} ${type} {${opt?.bodyHeader || ''}\n`;
-  if (baseTypes) {
+  if (baseTypes?.length) {
     for (const bt of baseTypes) {
       s += `\t${getFullTypeString(bt)}\n`;
     }

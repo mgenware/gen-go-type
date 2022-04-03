@@ -19,6 +19,28 @@ it('Names and types', () => {
   );
 });
 
+it('Empty base types', () => {
+  assert.strictEqual(
+    genGoType(
+      structString,
+      'T',
+      [
+        { name: 'A', type: 'T' },
+        { name: 'A_______A', type: 'T2' },
+        { name: 'B', type: 'T______T' },
+      ],
+      undefined,
+      [],
+    ),
+    `type T struct {
+\tA         T
+\tA_______A T2
+\tB         T______T
+}
+`,
+  );
+});
+
 it('Tags', () => {
   assert.strictEqual(
     genGoType(structString, 'T', [
