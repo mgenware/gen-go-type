@@ -1,6 +1,6 @@
 {
   "name": "gen-go-type",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Generate a formatted Go type string in JavaScript",
   "type": "module",
   "exports": "./dist/main.js",
