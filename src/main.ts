@@ -63,8 +63,8 @@ export function genGoType(
       const btParams = baseTypes.map((t) => `${t.paramName} *${getFullTypeString(t)}, `).join('');
       params = btParams + params;
     }
-    s += `\nfunc New${name}(${params}) ${opt?.returnValueInCtor ? '' : '*'}${name} {\n`;
-    s += `\treturn ${opt?.returnValueInCtor ? '' : '&'}${name}{\n`;
+    s += `\nfunc New${name}(${params}) ${opt.returnValueInCtor ? '' : '*'}${name} {\n`;
+    s += `\treturn ${opt.returnValueInCtor ? '' : '&'}${name}{\n`;
     if (baseTypes) {
       for (const bt of baseTypes) {
         s += `\t\t${bt.name}: *${bt.paramName},\n`;
